@@ -82,14 +82,14 @@ SKT는 2007년부터 자체 스팸 필터링 시스템을 운영해 왔으며, �
 
 ## 사용 방법
 
-# 개발 환경 설정 가이드
+## 개발 환경 설정 가이드
 
 파트 A(프론트엔드) · B(AI) · C(백엔드) 각각의 로컬 실행 방법.  
 Azure 리소스(Functions, Container Apps, SQL 등)는 별도로 프로비저닝 필요 → [`Azure_services.md`](Azure_services.md) 참조.
 
 ---
 
-## 공통 필수 도구
+### 공통 필수 도구
 
 | 도구 | 버전 | 설명 |
 |---|---|---|
@@ -122,7 +122,7 @@ brew install msodbcsql18
 
 ---
 
-## 파트 A — 프론트엔드
+### 파트 A — 프론트엔드
 
 ```bash
 cd frontend
@@ -135,7 +135,7 @@ npm run dev
 
 ---
 
-## 파트 B — AI 서비스
+### 파트 B — AI 서비스
 
 ```bash
 cd ai
@@ -165,7 +165,7 @@ uvicorn app.main:app --reload --port 8000
 
 ---
 
-## 파트 C — 백엔드
+### 파트 C — 백엔드
 
 ```bash
 cd backend
@@ -207,7 +207,7 @@ Functions:
 
 ---
 
-## 동작 확인
+### 동작 확인
 
 파트 B(`localhost:8000`)와 파트 C(`localhost:7071`)를 모두 띄운 상태에서 테스트.  
 API 명세는 [`api-contract.md`](api-contract.md) 참조.
@@ -233,7 +233,7 @@ curl -X POST http://localhost:7071/api/analyze \
 curl "http://localhost:7071/api/history?limit=10&offset=0"
 ```
 
-## 서비스 접속
+### 서비스 접속
 
 배포된 프론트엔드 서비스는 아래 주소에서 접속할 수 있다.
 
@@ -261,3 +261,20 @@ curl "http://localhost:7071/api/history?limit=10&offset=0"
 ---
 
 ## AI 활용
+
+본 프로젝트 개발 과정에서는 생성형 AI를 개발 보조 도구로 활용하였다. 팀원들은 각각 ChatGPT(OpenAI), Claude(Anthropic), Gemini(Google)를 활용하여 코드 작성, 기술 조사, 오류 분석 및 디버깅, 문서 작성 등의 작업을 수행하였다.
+
+주요 활용 내용은 다음과 같다.
+
+* Azure 서비스 사용법 및 설정 방법 조사
+* FastAPI, React, Azure Functions 구현 지원
+* Google Safe Browsing API 및 Azure AI 서비스 연동
+* Docker 및 Azure 클라우드 배포 과정 지원
+* 오류 분석 및 디버깅
+* API 설계 및 데이터 처리 로직 검토
+* README 및 프로젝트 문서 작성 지원
+
+다만 생성형 AI가 제안한 코드와 설계를 그대로 적용하지 않고, 프로젝트 요구사항에 맞게 수정 및 검증 과정을 거쳐 사용하였다. 시스템 구조 설계, Azure 리소스 구성, 서비스 통합, 테스트 및 배포 과정은 팀원들이 직접 수행하였다.
+
+프로젝트 전체 기준으로 약 50~60% 정도의 코드 작성 및 개발 과정에서 생성형 AI의 도움을 받았으며, 나머지는 프로젝트 환경에 맞게 수정·통합 및 검증하는 과정에서 직접 구현하였다.
+
