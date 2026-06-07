@@ -37,7 +37,7 @@ npm run dev
 ```
 
 ## 🌐 배포 (Deployment)
-**Azure Static Web Apps**를 활용하여 프론트엔드를 호스팅할 예정입니다.
+**Azure Static Web Apps**
 
 ## 🎨 출처 및 리소스
 - **Favicon**: Flaticon (피싱 관련 아이콘 적용)
