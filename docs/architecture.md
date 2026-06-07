@@ -29,18 +29,38 @@ Blob Storage
   유니코드 정규화 → 이모지 제거 → 문자 치환
   자모 복원 → URL 토큰화 → 구두점 복원
         ↓
-KLUE-BERT 파인튜닝 모델    Azure AI Language
-(Korean_message 학습)     (엔티티·URL 감지)
-        ↓                       ↓
-        └──── 종합 판정 로직 ────┘
-                ↓ 결과 JSON 반환
+[1단계] Google Safe Browsing
+  악성 URL 탐지 → 즉시 smishing 확정 (신뢰도 0.99)
+        ↓ (악성 아닌 경우)
+[2단계] 3가지 병렬 실행
+  ┌─────────────────────────────────────────┐
+  │ Spam 모델                               │
+  │ (blockenters/sms-spam-classifier)       │
+  │ HuggingFace Transformer                 │
+  ├─────────────────────────────────────────┤
+  │ Smishing 모델                           │
+  │ (Hyeonseo/ko-smishing-detector)         │
+  │ sklearn Pipeline (joblib)               │
+  ├─────────────────────────────────────────┤
+  │ Azure AI Language                       │
+  │ 엔티티·URL·전화번호·기관명 감지          │
+  └─────────────────────────────────────────┘
+        ↓
+[3단계] Aggregator — 종합 판정
+  우선순위:
+  1. Safe Browsing 악성 → smishing / high / 0.99
+  2. adjusted_smishing_score ≥ 0.70 → smishing / high
+     (smishing 모델 0.7 + Azure 엔티티 점수 0.3 가중합)
+  3. spam_score ≥ 0.70 → spam / medium
+  4. 이외 → normal / low
+        ↓ 결과 JSON 반환
 ```
 
 **Azure Functions (파트 C) — 결과 처리**
 
 ```
 Azure SQL 저장          결과 카드 반환
-(분석 결과·이력)         (스팸/의심/정상·신뢰도·근거)
+(visibility=public일 때만) (label·risk_level·confidence·reason)
         ↓                       ↓
         └──────────────────────┘
                 ↓

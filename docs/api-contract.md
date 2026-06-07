@@ -23,13 +23,15 @@ Base URL (배포 후): `https://smishingdet-functions.azurewebsites.net/api`
 
 ### POST /api/analyze
 
-이미지 또는 텍스트를 받아 스팸 여부를 분석한다.
+이미지 또는 텍스트를 받아 스팸 여부를 분석한다.  
+`visibility`가 `"public"`인 경우에만 분석 결과를 DB에 저장한다.
 
 **이미지 입력:**
 ```
 Content-Type: multipart/form-data
 Body:
-  file: <이미지 파일 (.jpg / .png / .webp)>
+  file:       <이미지 파일 (.jpg / .png / .webp)>
+  visibility: "public" | "private"  (기본값: "private")
 ```
 
 **텍스트 입력:**
@@ -37,26 +39,27 @@ Body:
 Content-Type: application/json
 Body:
 {
-  "text": "분석할 메시지 내용"
+  "text": "분석할 메시지 내용",
+  "visibility": "public" | "private"  // 기본값: "private"
 }
 ```
 
 **성공 응답 (200):**
 ```json
 {
-  "id": 123,
   "input_type": "image",
-  "label": "spam",
+  "label": "smishing",
   "risk_level": "high",
   "confidence": 0.95,
-  "reason": ["URL 포함", "금융 관련 키워드"],
-  "created_at": "2026-05-21T10:00:00Z"
+  "reason": ["Google Safe Browsing에서 악성 URL로 탐지됨"]
 }
 ```
 
-> `label` 가능 값: `"spam"` | `"suspicious"` | `"normal"`  
+> `input_type` 가능 값: `"text"` | `"image"`  
+> `label` 가능 값: `"smishing"` | `"spam"` | `"normal"`  
 > `risk_level` 가능 값: `"high"` | `"medium"` | `"low"`  
-> `confidence`: 0.0 ~ 1.0
+> `confidence`: 0.0 ~ 1.0  
+> `id`, `created_at`은 응답에 포함되지 않음
 
 **에러 응답:**
 ```json
@@ -71,7 +74,7 @@ Body:
 
 ### GET /api/history
 
-분석 이력을 최신순으로 조회한다.
+`visibility = "public"`으로 저장된 분석 이력을 최신순으로 조회한다.
 
 **쿼리 파라미터:**
 | 파라미터 | 타입 | 기본값 | 설명 |
@@ -86,16 +89,29 @@ Body:
     {
       "id": 123,
       "input_type": "text",
-      "label": "spam",
+      "original_text": "분석된 원문 텍스트",
+      "label": "smishing",
       "risk_level": "high",
       "confidence": 0.95,
-      "reason": ["URL 포함"],
+      "reason": ["Google Safe Browsing에서 악성 URL로 탐지됨"],
+      "visibility": "public",
       "created_at": "2026-05-21T10:00:00Z"
     }
   ],
   "total": 50
 }
 ```
+
+> `total`은 전체 저장 건수 (visibility 무관)
+
+**에러 응답:**
+```json
+{ "error": "에러 메시지" }
+```
+| 상태 코드 | 사유 |
+|---|---|
+| 400 | limit / offset이 정수가 아닌 경우 |
+| 500 | DB 조회 오류 |
 
 ---
 
@@ -120,7 +136,6 @@ Body:
 **응답:**
 ```json
 {
-  "request_id": "<uuid>",
   "label": "spam",
   "risk_level": "high",
   "confidence": 0.91,
@@ -128,7 +143,7 @@ Body:
 }
 ```
 
-> `label` 가능 값: `"spam"` | `"suspicious"` | `"normal"`  
+> `label` 가능 값: `"smishing"` | `"spam"` | `"normal"`  
 > 파트 C는 파트 B 응답을 변환 없이 그대로 저장 및 전달
 
 ---
