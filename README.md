@@ -78,7 +78,7 @@ SKT는 2007년부터 자체 스팸 필터링 시스템을 운영해 왔으며, �
 
 ### 요청 흐름 (시퀀스 다이어그램)
 
-![시퀀스 다이어그램](images/sequnce_diagram.png)
+![시퀀스 다이어그램](images/sequence_diagram.png)
 
 ## 사용 방법
 
