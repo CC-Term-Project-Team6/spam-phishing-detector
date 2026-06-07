@@ -1,8 +1,18 @@
-backend/local.settings.json
-backend/.venv/
-backend/__pycache__/
+# Azure Functions
+local.settings.json
+.python_packages/
+.funcignore
+
+# Python
+__pycache__/
 **/__pycache__/
 *.pyc
+*.pyo
+.venv/
+
+# Env
 .env
+
+# macOS
 .DS_Store
 **/.DS_Store

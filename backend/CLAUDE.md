@@ -10,9 +10,9 @@
 
 ## 핵심 문서
 
-- 시스템 구조: [`docs/architecture.md`](docs/architecture.md)
-- Azure 서비스 정리: [`docs/Azure_services.md`](docs/Azure_services.md)
-- API 계약: [`docs/api-contract.md`](docs/api-contract.md)
+- 시스템 구조: [`../docs/architecture.md`](../docs/architecture.md)
+- Azure 서비스 정리: [`../docs/Azure_services.md`](../docs/Azure_services.md)
+- API 계약: [`../docs/api-contract.md`](../docs/api-contract.md)
 
 ## 기술 스택 (파트 C)
 
@@ -38,6 +38,6 @@
 
 | 날짜 | 기능 | 파일 | 비고 |
 |------|------|------|------|
-| 2026-05-21 | POST /api/analyze — 텍스트 입력 + SQL 저장 | backend/function_app.py | 파트 B 연결은 mock, 이미지 경로 미구현 |
-| 2026-05-21 | GET /api/history — SQL 조회 + 페이지네이션 | backend/function_app.py | limit/offset 지원 |
-| 2026-05-21 | POST /api/analyze — 이미지 입력 (Blob + Vision OCR) | backend/function_app.py | Blob 컨테이너명 "images", 파트 B 연결은 mock |
+| 2026-05-21 | POST /api/analyze — 텍스트 입력 + SQL 저장 | function_app.py | 파트 B 연결은 mock, 이미지 경로 미구현 |
+| 2026-05-21 | GET /api/history — SQL 조회 + 페이지네이션 | function_app.py | limit/offset 지원 |
+| 2026-05-21 | POST /api/analyze — 이미지 입력 (Blob + Vision OCR) | function_app.py | Blob 컨테이너명 "images", 파트 B 연결은 mock |
