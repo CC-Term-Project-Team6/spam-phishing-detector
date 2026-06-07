@@ -80,6 +80,20 @@ SKT는 2007년부터 자체 스팸 필터링 시스템을 운영해 왔으며, �
 
 ![시퀀스 다이어그램](images/sequence_diagram.png)
 
+### 서비스 실행 화면
+
+#### 메인 화면
+
+사용자가 문자 내용을 직접 입력하거나 이미지를 업로드하여 스팸 및 스미싱 여부를 분석할 수 있다.
+
+![메인 화면](images/main_page.png)
+
+#### 분석 결과 화면
+
+Google Safe Browsing, 스팸·스미싱 탐지 모델, Azure AI Language Service의 분석 결과를 종합하여 최종 판별 결과와 판단 근거를 제공한다.
+
+![분석 결과 화면](images/result_page.png)
+
 ## 사용 방법
 
 ## 개발 환경 설정 가이드
